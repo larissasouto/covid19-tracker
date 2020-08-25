@@ -82,7 +82,8 @@ function App() {
 
       // All of the data from the country response
       setCountryInfo(data);
-      setMapCenter([data.countryInfo.lat, data.countryInfo.lng]);
+
+      setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
       setMapZoom(4);
     });
   };
