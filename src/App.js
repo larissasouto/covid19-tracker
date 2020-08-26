@@ -8,7 +8,7 @@ import {
 import InfoBox from './InfoBox';
 import Map from './Map';
 import Table from './Table';
-import { sortData } from './util';
+import { sortData, prettyPrintStat } from './util';
 import LineGraph from './LineGraph';
 import './App.css';
 import 'leaflet/dist/leaflet.css';
@@ -20,6 +20,7 @@ function App() {
   const [tableData, setTableData] = useState([]);
   const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
   const [mapZoom, setMapZoom] = useState(3);
+  const [mapCountries, setMapCountries] = useState([]);
 
   useEffect(()=>{
     fetch("https://disease.sh/v3/covid-19/all")
@@ -58,6 +59,7 @@ function App() {
 
         const sortedData = sortData(data);
         setTableData(sortedData);
+        setMapCountries(data);
         setCountries(countries);
       });
     };
@@ -106,7 +108,7 @@ function App() {
 
         <div className="app__stats">
           {/**InfoBoxs title="Coronavirus cases" */}
-          <InfoBox title="Coronavirus Cases" cases={countryInfo.todayCases} total={countryInfo.cases} />
+          <InfoBox title="Coronavirus Cases" cases={prettyPrintStat(countryInfo.todayCases)} total={countryInfo.cases} />
 
           {/**InfoBoxs title="Coronavirus recoveries" */}
           <InfoBox title="Recovered" cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
@@ -116,6 +118,7 @@ function App() {
         </div>
 
         <Map 
+          countries={mapCountries}
           center={mapCenter}
           zoom={mapZoom}
         />
